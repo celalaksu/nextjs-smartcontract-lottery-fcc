@@ -31,6 +31,14 @@ export default function LotteryEntrance() {
         params: {},
     })
 
+    // const contract = useWeb3Contract({
+    //     abi: abi,
+    //     contractAddress: raffleAddres,
+    //     functionName: "enterRaffle",
+    //     msgValue: entranceFee,
+    //     params: {},
+    // })
+
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
         abi: abi,
         contractAddress: raffleAddres,
@@ -59,10 +67,16 @@ export default function LotteryEntrance() {
         setRecentWinner(recentWinnerFromCall)
         console.log(entranceFee)
     }
+    // async function recentWinnerListener() {
+    //     contract.events.WinnerPicked({}, () => {
+    //         setRecentWinner(recentWinnerFromCall)
+    //     })
+    // }
 
     useEffect(() => {
         if (isWeb3Enabled) {
             updateUI()
+            //recentWinnerListener()
         }
     }, [isWeb3Enabled])
 
@@ -81,6 +95,7 @@ export default function LotteryEntrance() {
             icon: "bell",
         })
     }
+
     return (
         <div className="p-5">
             Hi from lottery entrance!
@@ -91,6 +106,7 @@ export default function LotteryEntrance() {
                         onClick={async () => {
                             await enterRaffle({
                                 onSuccess: handleSuccess,
+                                onError: (error) => console.log(error),
                             })
                         }}
                         disabled={isLoading || isFetching}
